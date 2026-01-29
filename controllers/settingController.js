@@ -24,9 +24,12 @@ const changePassword = async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    await user.save();
+    // ✅ update only password (no validation on name)
+    await User.findByIdAndUpdate(user._id, {
+      password: hashedPassword,
+    });
 
     res.json({
       success: true,

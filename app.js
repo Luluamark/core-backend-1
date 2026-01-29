@@ -10,6 +10,7 @@ const employeeRouter = require("./routes/employee");
 const SalaryRouter = require("./routes/salary");
 const LeaveRouter = require("./routes/leave");
 const settingRouter = require("./routes/setting");
+const dashboardRouter = require("./routes/dashboard");
 
 const connectDB = require("./db/db");
 
@@ -64,6 +65,7 @@ app.use("/api/employee", employeeRouter);
 app.use("/api/salary", SalaryRouter);
 app.use("/api/leave", LeaveRouter);
 app.use("/api/setting", settingRouter);
+app.use("/api/dashboard", dashboardRouter);
 
 /* =======================
    TEST ROUTE

@@ -116,18 +116,20 @@ const deleteDepartment = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedDepartment = await DepartmentModel.findByIdAndDelete(id);
+    const department = await DepartmentModel.findById(id);
 
-    if (!deletedDepartment) {
+    if (!department) {
       return res.status(404).json({
         success: false,
         message: "Department not found",
       });
     }
 
+    await department.deleteOne(); // ✅ correct
+
     return res.status(200).json({
       success: true,
-      department: deletedDepartment,
+      department,
     });
   } catch (error) {
     console.error(error);
@@ -137,6 +139,33 @@ const deleteDepartment = async (req, res) => {
     });
   }
 };
+
+// const deleteDepartment = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const deletedDepartment = await DepartmentModel.findById(id);
+//     await deleteDepartment.deleteOne();
+
+//     if (!deletedDepartment) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Department not found",
+//       });
+//     }
+
+//     return res.status(200).json({
+//       success: true,
+//       department: deletedDepartment,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Delete department failed",
+//     });
+//   }
+// };
 
 // =======================
 // EXPORTS (IMPORTANT)
