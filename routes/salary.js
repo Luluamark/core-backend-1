@@ -9,7 +9,17 @@ const {
 const router = express.Router();
 
 router.post("/add", authMiddleware, addSalary);
-router.get("/:id", authMiddleware, getSalary);
+
+// Admin – salary by employeeId
+router.get("/admin/:id", authMiddleware, getSalary);
+
+// Employee – own salary by userId
 router.get("/employee/:id", authMiddleware, getEmployeeSalary);
+
+// // employee salary FIRST
+// router.get("/employee/:id", authMiddleware, getEmployeeSalary);
+
+// // generic LAST
+// router.get("/:id/:role", authMiddleware, getSalary);
 
 module.exports = router;

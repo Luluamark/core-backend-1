@@ -35,10 +35,6 @@ const upload = multer({ storage });
 
 const addEmployee = async (req, res) => {
   try {
-    // Debug (remove later if you want)
-    // console.log("FILE:", req.file);
-    // console.log("BODY:", req.body);
-
     const {
       name,
       email,
@@ -78,7 +74,9 @@ const addEmployee = async (req, res) => {
       username: email.split("@")[0],
       email,
       password: hashedPassword,
-      role: role === "admin" ? "admin" : "user", // FIX
+      // role: role === "admin" ? "admin" : "user", // FIX
+      role: role === "admin" ? "admin" : "employee",
+
       profileImage: req.file ? req.file.filename : "",
     });
 

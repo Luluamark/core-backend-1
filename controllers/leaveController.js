@@ -24,36 +24,50 @@ const addLeave = async (req, res) => {
   }
 };
 
-const getLeave = async (req, res) => {
-  try {
-    const userId = req.user.id;
+// const getLeave = async (req, res) => {
+//   try {
+//     let leaves;
+//     const { userId, role } = req.user.id;
 
-    const employee = await Employee.findOne({ userId });
+//     if (role === "admin") {
+//       leaves = await Leave.find({ employeeId: employee._id });
+//     } else {
+//       const employee = await Employee.findOne({ userId });
+//     }
 
-    if (!employee) {
-      return res.status(404).json({
-        success: false,
-        error: "Employee profile not found for this user",
-      });
-    }
+//     if (!employee) {
+//       return res.status(404).json({
+//         success: false,
+//         error: "Employee profile not found for this user",
+//       });
+//     }
 
-    const leaves = await Leave.find({ employeeId: employee._id });
-
-    return res.status(200).json({ success: true, leaves });
-  } catch (error) {
-    console.error("GET MY LEAVES ERROR:", error);
-    return res.status(500).json({ success: false });
-  }
-};
+//     return res.status(200).json({ success: true, leaves });
+//   } catch (error) {
+//     console.error("GET MY LEAVES ERROR:", error);
+//     return res.status(500).json({ success: false });
+//   }
+// };
 
 // const getLeave = async (req, res) => {
 //   try {
-//     const { id } = req.params;
 //     const userId = req.user.id;
+//     const role = req.user.role;
 
-//     let leaves = await Leave.find({ employeeId: id });
-//     if (!leaves || leaves.length === 0) {
+//     let leaves;
+
+//     if (role === "admin") {
+//       leaves = await Leave.find();
+//     } else {
 //       const employee = await Employee.findOne({ userId });
+
+//       if (!employee) {
+//         return res.status(404).json({
+//           success: false,
+//           error: "Employee profile not found",
+//         });
+//       }
+
 //       leaves = await Leave.find({ employeeId: employee._id });
 //     }
 
@@ -63,6 +77,41 @@ const getLeave = async (req, res) => {
 //     return res.status(500).json({ success: false });
 //   }
 // };
+
+const getLeave = async (req, res) => {
+  try {
+    const { id, role } = req.params; // params from frontend
+    let leaves;
+
+    if (role === "admin") {
+      leaves = await Leave.find().populate({
+        path: "employeeId",
+        populate: [
+          { path: "userId", select: "name" },
+          { path: "department", select: "dep_name" },
+        ],
+      });
+    } else {
+      const employee = await Employee.findOne({ userId: id });
+      if (!employee) {
+        return res.status(200).json({ success: true, leaves: [] });
+      }
+
+      leaves = await Leave.find({ employeeId: employee._id }).populate({
+        path: "employeeId",
+        populate: [
+          { path: "userId", select: "name" },
+          { path: "department", select: "dep_name" },
+        ],
+      });
+    }
+
+    return res.status(200).json({ success: true, leaves });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false });
+  }
+};
 
 const getLeaves = async (req, res) => {
   try {
@@ -100,7 +149,7 @@ const getLeaveDetail = async (req, res) => {
         },
         {
           path: "userId",
-          select: "name, profileImage",
+          select: "name profileImage",
         },
       ],
     });

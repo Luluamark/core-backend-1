@@ -17,15 +17,9 @@ router.get("/", authMiddleware, getLeaves);
 // MUST be before /:id
 router.get("/LeaveDetail/:id", authMiddleware, getLeaveDetail);
 
-// user leaves (no param needed)
-router.get("/my", authMiddleware, getLeave);
+// Get leaves for employee/admin
+router.get("/:id/:role", authMiddleware, getLeave);
 
 router.put("/:id", authMiddleware, updateLeave);
-
-// router.post("/add", authMiddleware, addLeave);
-// router.get("/:id", authMiddleware, getLeave);
-// router.get("/LeaveDetail/:id", authMiddleware, getLeaveDetail);
-// router.get("/", authMiddleware, getLeaves);
-// router.put("/:id", authMiddleware, updateLeave);
 
 module.exports = router;

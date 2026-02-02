@@ -10,6 +10,7 @@ const employeeRouter = require("./routes/employee");
 const SalaryRouter = require("./routes/salary");
 const LeaveRouter = require("./routes/leave");
 const settingRouter = require("./routes/setting");
+const attendanceRouter = require("./routes/attendance");
 const dashboardRouter = require("./routes/dashboard");
 
 const connectDB = require("./db/db");
@@ -24,10 +25,7 @@ const app = express();
    GLOBAL MIDDLEWARE
 ======================= */
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://hris-frontend-lime.vercel.app",
-];
+const allowedOrigins = ["http://localhost:5173"];
 
 app.use(
   cors({
@@ -65,6 +63,7 @@ app.use("/api/employee", employeeRouter);
 app.use("/api/salary", SalaryRouter);
 app.use("/api/leave", LeaveRouter);
 app.use("/api/setting", settingRouter);
+app.use("/api/attendance", attendanceRouter);
 app.use("/api/dashboard", dashboardRouter);
 
 /* =======================
