@@ -2,7 +2,6 @@ const cors = require("cors");
 const express = require("express");
 const compression = require("compression");
 const dotenv = require("dotenv");
-const path = require("path");
 
 const authRoutes = require("./routes/auth");
 const departmentRouter = require("./routes/department");
@@ -52,7 +51,6 @@ connectDB();
 /* =======================
    STATIC FILES
 ======================= */
-app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
 /* =======================
    ROUTES
@@ -79,9 +77,11 @@ app.get("/", (req, res) => {
 /* =======================
    SERVER
 ======================= */
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+
+// No Need For Netlify
+// const port = process.env.PORT || 3000;
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`);
+// });
 
 module.exports = app;

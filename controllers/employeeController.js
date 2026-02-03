@@ -1,33 +1,16 @@
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
 const bcrypt = require("bcrypt");
 const Employee = require("../models/Employee");
 const User = require("../models/User");
 const Department = require("../models/DepartmentModel");
 
 /* ===============================
-   MULTER CONFIG
+MULTER CONFIG (NETLIFY SAFE)
 ================================ */
 
-// Absolute path to uploads folder
-const uploadPath = path.join(__dirname, "../public/uploads");
-
-// Ensure uploads folder exists
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
+const upload = multer({
+  dest: "/tmp/uploads",
 });
-
-const upload = multer({ storage });
 
 /* ===============================
    ADD EMPLOYEE CONTROLLER
