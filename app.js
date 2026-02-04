@@ -14,7 +14,8 @@ const dashboardRouter = require("./routes/dashboard");
 
 const connectDB = require("./db/db");
 
-dotenv.config({ path: "./config.env" });
+// dotenv.config({ path: "./config.env" });
+dotenv.config();
 
 console.log("DB URI:", process.env.DATABASE);
 
@@ -24,7 +25,12 @@ const app = express();
    GLOBAL MIDDLEWARE
 ======================= */
 
-const allowedOrigins = ["http://localhost:5173"];
+// const allowedOrigins = ["http://localhost:5173"];
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://hris-frontend.netlify.app",
+];
 
 app.use(
   cors({
@@ -67,10 +73,16 @@ app.use("/api/dashboard", dashboardRouter);
 /* =======================
    TEST ROUTE
 ======================= */
-app.get("/", (req, res) => {
+// app.get("/", (req, res) => {
+//   res.status(200).json({
+//     message: "Hello, World from server side!",
+//     app: "backend",
+//   });
+// });
+
+app.get("/api", (req, res) => {
   res.status(200).json({
-    message: "Hello, World from server side!",
-    app: "backend",
+    message: "Hello from Netlify backend!",
   });
 });
 
